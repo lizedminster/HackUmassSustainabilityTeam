@@ -24,10 +24,8 @@ function Register() {
         const data = await response.json();
         setUsername('');
         setPassword('');
-        // Check if duplicate username
         if (data.detail && data.detail.includes('duplicate')) {
           setError('Username already exists. Please choose another.');
-          
         } else {
           setError(data.detail || 'Registration failed');
         }
@@ -60,8 +58,22 @@ function Register() {
               required
             />
           </label>
-          <button type="submit">Register</button>
+         <button 
+            type="submit" 
+            style={{ marginLeft: '0px' }}
+        >
+        Register
+        </button>
         </form>
+
+        {/* Back to Login button */}
+        <button
+          style={{ marginTop: '15px' }}
+          onClick={() => navigate('/Auth')}
+        >
+          Back to Login
+        </button>
+
         {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
       </div>
     </div>
