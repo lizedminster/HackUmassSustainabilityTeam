@@ -30,7 +30,7 @@ function App() {
 
       {/* Main app (tabs) */}
       <Route
-        path="/app/*"
+        path="/*"
         element={
           token ? (
             <div className="App">
@@ -46,7 +46,7 @@ function App() {
               <TabsContainer />
             </div>
           ) : (
-            <Navigate to="/" />
+            <Navigate to="/Auth" />
           )
         }
       />
