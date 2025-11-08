@@ -11,29 +11,18 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Helper: get ISO week number
-const getWeekNumber = (date) => {
-  const d = new Date(date);
-  const oneJan = new Date(d.getFullYear(), 0, 1);
-  const numberOfDays = Math.floor((d - oneJan) / (24 * 60 * 60 * 1000));
-  return Math.ceil((d.getDay() + 1 + numberOfDays) / 7);
-};
+const categories = ["Glass", "Paper", "Plastic", "Metal", "Organic", "Cardboard"];
 
 const WeeklyBarChart = ({ data, week }) => {
-  const categories = ["catA", "catB", "catC", "catD", "catE", "catF"];
-
-  // Filter data for the given week
-  const weekData = data.filter((d) => getWeekNumber(d.date) === week);
-
-  // Aggregate totals for each category
+  // Since Dashboard already filters by week, we can skip filtering here.
+  // But we can still aggregate totals across days for the selected week.
   const graphData = categories.map((cat) => ({
     category: cat,
-    value: weekData.reduce((sum, day) => sum + (day[cat] || 0), 0),
+    value: data.reduce((sum, day) => sum + (day[cat] || 0), 0),
   }));
 
   return (
     <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
-      {/* Bar chart */}
       <ResponsiveContainer width="100%" height={350}>
         <RechartsBarChart
           data={graphData}
