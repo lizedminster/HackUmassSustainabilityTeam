@@ -19,7 +19,7 @@ def create_user_service(user):
     """
     data = {
         "username": user.get("username"),
-        "email": user.get("email"),
+        "hexcolor": user.get("hexcolor"),
         "password": user.get("password")  # store plain text for now
     }
     response = supabase.table("users").insert(data).execute()
@@ -29,7 +29,7 @@ def create_user_service(user):
         return {
             "id": inserted["id"],
             "username": inserted["username"],
-            "email": inserted["email"]
+            "hexcolor": inserted["hexcolor"]
         }
     return None
 
@@ -40,6 +40,6 @@ def get_users_service():
     response = supabase.table("users").select("*").execute()
     # Remove passwords before returning
     return [
-        {"id": u["id"], "username": u["username"], "email": u["email"]}
+        {"id": u["id"], "username": u["username"], "hexcolor": u["hexcolor"]}
         for u in response.data
     ] if response.data else []
