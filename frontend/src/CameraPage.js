@@ -2,6 +2,7 @@ import React from 'react';
 import CameraCapture from './Components/CameraCapture';
 import TextBox from './Components/TextBox';
 
+
 function CameraPage() {
   return (
     <div className="App">

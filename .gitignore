@@ -21,6 +21,7 @@ yarn-debug.log*
 yarn-error.log*
 
 backgroundRemoved.png
+inputImage.png
 
 venv/
 .env

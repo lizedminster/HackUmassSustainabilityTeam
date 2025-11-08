@@ -1,3 +1,14 @@
+def verify_user_service(username, password):
+    response = supabase.table("users").select("*").eq("username", username).eq("password", password).execute()
+    if response.data:
+        user = response.data[0]
+        return {
+            "id": user["id"],
+            "username": user["username"],
+            "email": user["email"]
+        }
+    else:
+        return None
 from app.supabase_client import supabase
 
 def create_user_service(user):

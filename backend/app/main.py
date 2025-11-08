@@ -48,6 +48,8 @@ async def upload_image(data: ImageData):
         # Convert bytes to PIL.Image
         input_image = Image.open(BytesIO(image_bytes))
 
+        input_image.save("inputImage.png")
+
         # Remove background
         output_image = remove(input_image)
 
