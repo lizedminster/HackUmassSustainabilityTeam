@@ -2,8 +2,6 @@ import './App.css';
 import React from 'react';
 import CameraCapture from './Components/CameraCapture';
 import TextBox from './Components/TextBox';
-import Tabs from './Components/Tabs';
-import Tab from './Components/Tab';
 import TabsContainer from './TabsContainer';
 
 function App() {

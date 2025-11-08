@@ -58,7 +58,7 @@ async def upload_image(data: ImageData):
         output_image = remove(input_image)
 
         # Save output
-        output_path = "exampleTrashBlank.png"
+        output_path = "backgroundRemoved.png"
         output_image.save(output_path)
 
         return {"success": True, "output_path": output_path}
