@@ -5,7 +5,7 @@ def verify_user_service(username, password):
         return {
             "id": user["id"],
             "username": user["username"],
-            "email": user["email"]
+            "hexcolor": user["hexcolor"]
         }
     else:
         return None
@@ -14,8 +14,8 @@ from app.supabase_client import supabase
 def create_user_service(user):
     """
     Adds a new user to Supabase.
-    Expects a dict with keys: username, email, password
-    Returns a dict with id, username, email
+    Expects a dict with keys: username, hexcolor, password
+    Returns a dict with id, username, hexcolor
     """
     data = {
         "username": user.get("username"),
