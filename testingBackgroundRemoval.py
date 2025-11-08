@@ -5,7 +5,7 @@ from PIL import Image
 input_path =  'exampleTrash.jpg'
 
 # Store path of the output image in the variable output_path
-output_path = 'exampleTrashBlank.png'
+output_path = 'photo_recycler/src/Components/images/exampleTrashBlank.png'
 
 # Processing the image
 input = Image.open(input_path)
