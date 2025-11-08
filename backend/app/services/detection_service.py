@@ -11,6 +11,13 @@ import numpy as np
 import cv2
 import os
 
+# # imports for removing background
+# import base64
+# from io import BytesIO
+# from pydantic import BaseModel
+# from rembg import remove
+# from PIL import Image
+
 # ---------------- PATCH FOR TORCH 2.6+ ----------------
 add_safe_globals([DetectionModel, Sequential])
 torch_load_original = torch.load
@@ -29,19 +36,18 @@ model.agnostic = False
 model.multi_label = False
 model.max_det = 1000
 
-# ---------------- INPUT IMAGE ------------------------
-img = 'backgroundRemoved.png'
+def detect_material(image_path: str) -> str:
+    # ---------------- INFERENCE --------------------------
+    results = model(image_path, augment=True)
 
-# ---------------- INFERENCE --------------------------
-results = model(img, augment=True)
-
-
-
-# finds item type in results output (Detections object)
-names = model.names 
-predictions = results.pred[0]  
-classes = predictions[:, 5].int().tolist()
-detected_labels = [names[c] for c in classes]
-detected_material = str(detected_labels[0]) #i am getting the first item because it has the highest probability.
-print(detected_material)
-
+    # finds item type in results output (Detections object)
+    names = model.names 
+    predictions = results.pred[0]  
+    classes = predictions[:, 5].int().tolist()
+    detected_labels = [names[c] for c in classes]
+    if not detected_labels:
+        return "unknown"
+    
+    detected_material = str(detected_labels[0]) #i am getting the first item because it has the highest probability.
+    print(detected_material)
+    return detected_material
