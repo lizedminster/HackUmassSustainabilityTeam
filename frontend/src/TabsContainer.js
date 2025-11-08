@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CameraPage from "./CameraPage";
 import SharePage from "./SharePage";
-import DashboardPage from "./DashboardPage";
+import Dashboard from "./Dashboard";
 
 function TabsContainer() {
   const [activeTab, setActiveTab] = useState("camera");
@@ -16,7 +16,7 @@ function TabsContainer() {
       <div className="tab-content">
         {activeTab === "share" && <SharePage />}
         {activeTab === "camera" && <CameraPage />}
-        {activeTab === "dashboard" && <DashboardPage />}
+        {activeTab === "dashboard" && <Dashboard />}
 
       </div>
     </div>

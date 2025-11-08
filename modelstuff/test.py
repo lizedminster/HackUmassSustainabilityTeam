@@ -9,6 +9,7 @@ import yolov5
 import functools
 import numpy as np
 import cv2
+import os
 
 # ---------------- PATCH FOR TORCH 2.6+ ----------------
 add_safe_globals([DetectionModel, Sequential])
