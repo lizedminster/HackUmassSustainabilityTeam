@@ -11,10 +11,7 @@ output_path = 'exampleTrashBlank.png'
 input = Image.open(input_path)
 
 # Removing the background from the given Image
-print("123")
 output = remove(input)
 
 #Saving the image in the given path
-print("456")
 output.save(output_path)
-print("789")
