@@ -6,26 +6,14 @@ import WeekNavigator from "./Components/WeekNavigator";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const USER_ID = 8; // <-- change this to the user you want to filter by
-
-  // Dummy leaderboard data
-  const leaderboardData1 = [
-    { username: "Alice", dataCount: 7, color: "#FF6B6B" },
-    { username: "Bob", dataCount: 5, color: "#4ECDC4" },
-    { username: "Charlie", dataCount: 9, color: "#FFD93D" },
-    { username: "Dana", dataCount: 6, color: "#6A4C93" },
-  ];
-
-  const leaderboardData2 = [
-    { username: "Alice", dataCount: 42, color: "#FF6B6B" },
-    { username: "Dana", dataCount: 41, color: "#6A4C93" },
-    { username: "Bob", dataCount: 31, color: "#4ECDC4" },
-    { username: "Charlie", dataCount: 12, color: "#FFD93D" },
-  ];
+  const USER_ID = 8; // Only show data for this user in charts
 
   const [barData, setBarData] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
+  const [leaderboardWeekly, setLeaderboardWeekly] = useState([]);
+  const [leaderboardAllTime, setLeaderboardAllTime] = useState([]);
+  const [logs, setLogs] = useState([]); // store all logs
 
   const formatDate = (datetime) => datetime.split("T")[0];
 
@@ -33,26 +21,26 @@ const Dashboard = () => {
     const fetchLogs = async () => {
       try {
         const res = await fetch("http://localhost:8000/recycle_log/");
-        const logs = await res.json();
+        const data = await res.json();
+        setLogs(data); // save all logs
 
-        // Filter by specific user
-        const userLogs = logs.filter((log) => log.user_id === USER_ID);
+        // Filter logs for this user only for charts
+        const userLogs = data.filter((log) => log.user_id === USER_ID);
 
-        // --- Bar Chart: group by date and material ---
+        // --- Bar chart: group by date and material ---
         const grouped = {};
         userLogs.forEach((log) => {
           if (!log.material_type) return;
-
           const date = formatDate(log.created_at);
-          const typeRaw = log.material_type.trim().toLowerCase();
-          const type = typeRaw.charAt(0).toUpperCase() + typeRaw.slice(1);
+          const type = log.material_type.trim().toLowerCase();
+          const key = type.charAt(0).toUpperCase() + type.slice(1);
 
           if (!grouped[date]) grouped[date] = { date };
-          grouped[date][type] = (grouped[date][type] || 0) + 1;
+          grouped[date][key] = (grouped[date][key] || 0) + 1;
         });
         setBarData(Object.values(grouped));
 
-        // --- Line Chart: total count per day ---
+        // --- Line chart: total count per day ---
         const lineCounts = {};
         userLogs.forEach((log) => {
           if (!log.material_type) return;
@@ -64,13 +52,59 @@ const Dashboard = () => {
           .sort()
           .map((date) => ({ date, value: lineCounts[date] }));
         setLineData(lineDataArray);
+
+        // --- All-time leaderboard ---
+        const allTimeCounts = {};
+        data.forEach((log) => {
+          allTimeCounts[log.user_id] = (allTimeCounts[log.user_id] || 0) + 1;
+        });
+        const allTimeLeaderboard = Object.entries(allTimeCounts)
+          .map(([user_id, dataCount]) => ({
+            username: `User ${user_id}`,
+            dataCount,
+            color: "#8884d8", // optional: assign color dynamically if needed
+          }))
+          .sort((a, b) => b.dataCount - a.dataCount);
+        setLeaderboardAllTime(allTimeLeaderboard);
+
       } catch (err) {
         console.error("Error fetching recycle logs:", err);
       }
     };
 
     fetchLogs();
-  }, []);
+  }, [USER_ID]);
+
+  // Recalculate weekly leaderboard whenever selectedWeek changes
+  useEffect(() => {
+    if (!selectedWeek || logs.length === 0) {
+      setLeaderboardWeekly([]);
+      return;
+    }
+
+    // Filter logs to those in the selected week
+    const weekLogs = logs.filter((log) => {
+      const date = new Date(formatDate(log.created_at) + "T00:00:00Z");
+      const sunday = new Date(selectedWeek + "T00:00:00Z");
+      const saturday = new Date(sunday.getTime() + 6 * 24 * 60 * 60 * 1000);
+      return date >= sunday && date <= saturday;
+    });
+
+    const weekCounts = {};
+    weekLogs.forEach((log) => {
+      weekCounts[log.user_id] = (weekCounts[log.user_id] || 0) + 1;
+    });
+
+    const weeklyLeaderboard = Object.entries(weekCounts)
+      .map(([user_id, dataCount]) => ({
+        username: `User ${user_id}`,
+        dataCount,
+        color: "#FF6B6B", // optional
+      }))
+      .sort((a, b) => b.dataCount - a.dataCount);
+
+    setLeaderboardWeekly(weeklyLeaderboard);
+  }, [selectedWeek, logs]);
 
   return (
     <div className="Dashboard">
@@ -95,8 +129,8 @@ const Dashboard = () => {
         {/* Leaderboard */}
         <div style={{ width: "80%", margin: "20px auto" }}>
           <Leaderboard
-            leaderboardData1={leaderboardData1}
-            leaderboardData2={leaderboardData2}
+            leaderboardData1={leaderboardWeekly}
+            leaderboardData2={leaderboardAllTime}
             title1="Top Users This Week"
             title2="Top Users All-Time"
           />
