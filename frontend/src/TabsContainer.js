@@ -14,7 +14,7 @@ function TabsContainer({user_id}) {
 
       </div>
       <div className="tab-content">
-        {activeTab === "share" && <SharePage />}
+        {activeTab === "share" && <SharePage user_id={user_id}/>}
         {activeTab === "camera" && <CameraPage user_id={user_id} />}
         {activeTab === "dashboard" && <Dashboard user_id = {user_id} />}
 

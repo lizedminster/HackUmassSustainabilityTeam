@@ -18,6 +18,9 @@ app = FastAPI(
     description="Backend API for React frontend",
     version="1.0.0"
 )
+origins = [
+    "http://localhost:3000",  # your React dev server
+]
 
 # 2. Middleware (optional but needed for React + FastAPI on different ports)
 app.add_middleware(
