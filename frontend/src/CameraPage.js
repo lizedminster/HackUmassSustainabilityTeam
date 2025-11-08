@@ -1,15 +1,14 @@
-import './App.css';
 import React from 'react';
 import CameraCapture from './Components/CameraCapture';
 import TextBox from './Components/TextBox';
 
-function App() {
+function CameraPage() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
+        <h1>
           RecycleTime
-        </p>
+        </h1>
         <div>
           <TextBox />
         </div>
@@ -21,4 +20,4 @@ function App() {
   );
 }
 
-export default App;
+export default CameraPage;
