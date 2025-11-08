@@ -1,17 +1,23 @@
-
-from fastapi import APIRouter, HTTPException
-from fastapi import Request
+from fastapi import APIRouter, HTTPException, Request
 from typing import List, Dict
 from app.services.user_service import create_user_service, get_users_service, verify_user_service
 import jwt
 import os
+from postgrest.exceptions import APIError  # import APIError to catch PostgREST errors
 
 router = APIRouter()
 
-
 @router.post("/", response_model=Dict)
 def create_user(user: Dict):
-    return create_user_service(user)
+    try:
+        return create_user_service(user)
+    except APIError as e:
+        # Check for duplicate key violation (PostgreSQL unique constraint)
+        if "duplicate key value violates unique constraint" in str(e):
+            raise HTTPException(status_code=409, detail="Username already exists")
+        else:
+            # For other database errors, raise 500
+            raise HTTPException(status_code=500, detail="Internal server error")
 
 @router.post("/login", response_model=Dict)
 async def login(request: Request):
