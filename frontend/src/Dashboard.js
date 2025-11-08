@@ -6,105 +6,129 @@ import WeekNavigator from "./Components/WeekNavigator";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const USER_ID = 8; // Only show data for this user in charts
+  const USER_ID = 3; // Logged-in user ID (temporary hardcoded)
 
   const [barData, setBarData] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [leaderboardWeekly, setLeaderboardWeekly] = useState([]);
   const [leaderboardAllTime, setLeaderboardAllTime] = useState([]);
-  const [logs, setLogs] = useState([]); // store all logs
+  const [logs, setLogs] = useState([]);
+  const [users, setUsers] = useState([]); // 👈 store all users with their hex colors
 
   const formatDate = (datetime) => datetime.split("T")[0];
 
+  // 🔹 Fetch both users and logs on mount
   useEffect(() => {
-    const fetchLogs = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8000/recycle_log/");
-        const data = await res.json();
-        setLogs(data); // save all logs
+        const [logsRes, usersRes] = await Promise.all([
+          fetch("http://localhost:8000/recycle_log/"),
+          fetch("http://localhost:8000/users/"),
+        ]);
 
-        // Filter logs for this user only for charts
-        const userLogs = data.filter((log) => log.user_id === USER_ID);
+        const [logsData, usersData] = await Promise.all([
+          logsRes.json(),
+          usersRes.json(),
+        ]);
 
-        // --- Bar chart: group by date and material ---
-        const grouped = {};
-        userLogs.forEach((log) => {
-          if (!log.material_type) return;
-          const date = formatDate(log.created_at);
-          const type = log.material_type.trim().toLowerCase();
-          const key = type.charAt(0).toUpperCase() + type.slice(1);
-
-          if (!grouped[date]) grouped[date] = { date };
-          grouped[date][key] = (grouped[date][key] || 0) + 1;
-        });
-        setBarData(Object.values(grouped));
-
-        // --- Line chart: total count per day ---
-        const lineCounts = {};
-        userLogs.forEach((log) => {
-          if (!log.material_type) return;
-          const date = formatDate(log.created_at);
-          lineCounts[date] = (lineCounts[date] || 0) + 1;
-        });
-
-        const lineDataArray = Object.keys(lineCounts)
-          .sort()
-          .map((date) => ({ date, value: lineCounts[date] }));
-        setLineData(lineDataArray);
-
-        // --- All-time leaderboard ---
-        const allTimeCounts = {};
-        data.forEach((log) => {
-          allTimeCounts[log.user_id] = (allTimeCounts[log.user_id] || 0) + 1;
-        });
-        const allTimeLeaderboard = Object.entries(allTimeCounts)
-          .map(([user_id, dataCount]) => ({
-            username: `User ${user_id}`,
-            dataCount,
-            color: "#8884d8", // optional: assign color dynamically if needed
-          }))
-          .sort((a, b) => b.dataCount - a.dataCount);
-        setLeaderboardAllTime(allTimeLeaderboard);
-
+        setLogs(logsData);
+        setUsers(usersData);
       } catch (err) {
-        console.error("Error fetching recycle logs:", err);
+        console.error("Error fetching data:", err);
       }
     };
 
-    fetchLogs();
-  }, [USER_ID]);
+    fetchData();
+  }, []);
 
-  // Recalculate weekly leaderboard whenever selectedWeek changes
+  // 🔹 Build leaderboards when logs or users change
   useEffect(() => {
-    if (!selectedWeek || logs.length === 0) {
+    if (logs.length === 0 || users.length === 0) return;
+
+    // --- All-time leaderboard ---
+    const allTimeCounts = {};
+    logs.forEach((log) => {
+      allTimeCounts[log.user_id] = (allTimeCounts[log.user_id] || 0) + 1;
+    });
+
+    const allTimeLeaderboard = Object.entries(allTimeCounts)
+      .map(([user_id, dataCount]) => {
+        const user = users.find((u) => u.id === Number(user_id));
+        const color = user?.hexcolor || "#8884d8"; // use user’s saved color
+        return {
+          username: user ? user.username : `User ${user_id}`,
+          dataCount,
+          color,
+        };
+      })
+      .sort((a, b) => b.dataCount - a.dataCount);
+
+    setLeaderboardAllTime(allTimeLeaderboard);
+  }, [logs, users]);
+
+  // 🔹 Weekly leaderboard & charts update when week changes
+  useEffect(() => {
+    if (!selectedWeek || logs.length === 0 || users.length === 0) {
+      setBarData([]);
+      setLineData([]);
       setLeaderboardWeekly([]);
       return;
     }
 
-    // Filter logs to those in the selected week
+    const sunday = new Date(selectedWeek + "T00:00:00Z");
+    const saturday = new Date(sunday.getTime() + 6 * 24 * 60 * 60 * 1000);
+
     const weekLogs = logs.filter((log) => {
-      const date = new Date(formatDate(log.created_at) + "T00:00:00Z");
-      const sunday = new Date(selectedWeek + "T00:00:00Z");
-      const saturday = new Date(sunday.getTime() + 6 * 24 * 60 * 60 * 1000);
-      return date >= sunday && date <= saturday;
+      const logDate = new Date(formatDate(log.created_at) + "T00:00:00Z");
+      return logDate >= sunday && logDate <= saturday;
     });
 
+    // --- Weekly leaderboard ---
     const weekCounts = {};
     weekLogs.forEach((log) => {
       weekCounts[log.user_id] = (weekCounts[log.user_id] || 0) + 1;
     });
 
     const weeklyLeaderboard = Object.entries(weekCounts)
-      .map(([user_id, dataCount]) => ({
-        username: `User ${user_id}`,
-        dataCount,
-        color: "#FF6B6B", // optional
-      }))
+      .map(([user_id, dataCount]) => {
+        const user = users.find((u) => u.id === Number(user_id));
+        const color = user?.hexcolor || "#FF6B6B";
+        return {
+          username: user ? user.username : `User ${user_id}`,
+          dataCount,
+          color,
+        };
+      })
       .sort((a, b) => b.dataCount - a.dataCount);
 
     setLeaderboardWeekly(weeklyLeaderboard);
-  }, [selectedWeek, logs]);
+
+    // --- User-specific charts ---
+    const userLogs = weekLogs.filter((log) => log.user_id === USER_ID);
+
+    const grouped = {};
+    userLogs.forEach((log) => {
+      if (!log.material_type) return;
+      const date = formatDate(log.created_at);
+      const type = log.material_type.trim().toLowerCase();
+      const key = type.charAt(0).toUpperCase() + type.slice(1);
+      if (!grouped[date]) grouped[date] = { date };
+      grouped[date][key] = (grouped[date][key] || 0) + 1;
+    });
+    setBarData(Object.values(grouped));
+
+    const lineCounts = {};
+    userLogs.forEach((log) => {
+      if (!log.material_type) return;
+      const date = formatDate(log.created_at);
+      lineCounts[date] = (lineCounts[date] || 0) + 1;
+    });
+    const lineDataArray = Object.keys(lineCounts)
+      .sort()
+      .map((date) => ({ date, value: lineCounts[date] }));
+    setLineData(lineDataArray);
+  }, [selectedWeek, logs, users, USER_ID]);
 
   return (
     <div className="Dashboard">
@@ -113,20 +137,23 @@ const Dashboard = () => {
 
         {/* Week Navigator */}
         <div style={{ width: "80%", margin: "20px auto" }}>
-          <WeekNavigator data={lineData} onWeekChange={setSelectedWeek} />
+          <WeekNavigator
+            data={logs.map((log) => ({ date: formatDate(log.created_at) }))}
+            onWeekChange={setSelectedWeek}
+          />
         </div>
 
         {/* Line Chart */}
         <div style={{ width: "80%", margin: "20px auto" }}>
-          {selectedWeek && <UsageLineChart data={lineData} week={selectedWeek} />}
+          <UsageLineChart data={lineData} week={selectedWeek} />
         </div>
 
         {/* Bar Chart */}
         <div style={{ width: "80%", margin: "20px auto" }}>
-          {selectedWeek && <WeeklyBarChart data={barData} week={selectedWeek} />}
+          <WeeklyBarChart data={barData} week={selectedWeek} />
         </div>
 
-        {/* Leaderboard */}
+        {/* Leaderboards */}
         <div style={{ width: "80%", margin: "20px auto" }}>
           <Leaderboard
             leaderboardData1={leaderboardWeekly}

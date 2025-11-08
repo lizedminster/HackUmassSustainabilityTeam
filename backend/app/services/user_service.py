@@ -5,7 +5,7 @@ def verify_user_service(username, password):
         return {
             "id": user["id"],
             "username": user["username"],
-            "email": user["email"]
+            "hexcolor": user["hexcolor"]
         }
     else:
         return None
@@ -14,12 +14,12 @@ from app.supabase_client import supabase
 def create_user_service(user):
     """
     Adds a new user to Supabase.
-    Expects a dict with keys: username, email, password
-    Returns a dict with id, username, email
+    Expects a dict with keys: username, hexcolor, password
+    Returns a dict with id, username, hexcolor
     """
     data = {
         "username": user.get("username"),
-        "email": user.get("email"),
+        "hexcolor": user.get("hexcolor"),
         "password": user.get("password")  # store plain text for now
     }
     response = supabase.table("users").insert(data).execute()
@@ -29,7 +29,7 @@ def create_user_service(user):
         return {
             "id": inserted["id"],
             "username": inserted["username"],
-            "email": inserted["email"]
+            "hexcolor": inserted["hexcolor"]
         }
     return None
 
@@ -40,6 +40,6 @@ def get_users_service():
     response = supabase.table("users").select("*").execute()
     # Remove passwords before returning
     return [
-        {"id": u["id"], "username": u["username"], "email": u["email"]}
+        {"id": u["id"], "username": u["username"], "hexcolor": u["hexcolor"]}
         for u in response.data
     ] if response.data else []

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HexColorPicker from './Components/HexColorPicker'; // ✅ import your picker
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [hexcolor, setHexcolor] = useState('#4ECDC4'); // 🎨 default color
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -14,12 +16,11 @@ function Register() {
       const response = await fetch('http://localhost:8000/users/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, hexcolor }), // ⬅️ include color
       });
 
       if (response.ok) {
-        // After successful registration, go to login page
-        navigate('/Auth');
+        navigate('/Auth'); // ✅ go to login after success
       } else {
         const data = await response.json();
         setUsername('');
@@ -39,6 +40,7 @@ function Register() {
     <div className="App">
       <div className="App-header">
         <h1>Create an account</h1>
+
         <form onSubmit={handleRegister}>
           <label>
             Username
@@ -49,6 +51,7 @@ function Register() {
               required
             />
           </label>
+
           <label>
             Password
             <input
@@ -58,12 +61,22 @@ function Register() {
               required
             />
           </label>
-         <button 
-            type="submit" 
-            style={{ marginLeft: '0px' }}
-        >
-        Register
-        </button>
+
+          {/* 🎨 Add the color picker */}
+          <div style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <HexColorPicker
+              label="Choose your circle color"
+              defaultColor={hexcolor}
+              onChange={setHexcolor}
+            />
+            <p style={{ marginTop: '8px' }}>
+              Selected color: <span style={{ color: hexcolor }}>{hexcolor}</span>
+            </p>
+          </div>
+
+          <button type="submit" style={{ marginTop: '10px' }}>
+            Register
+          </button>
         </form>
 
         {/* Back to Login button */}
