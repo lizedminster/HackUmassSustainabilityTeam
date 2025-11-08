@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { FaCamera } from "react-icons/fa";
 import ConfirmPhoto from './ConfirmPhoto';
@@ -7,6 +7,12 @@ import ReactDOM from 'react-dom/client';
 const CameraCapture = () => {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (image) {
+      uploadImage();
+    }
+  }, [image]);  
 
   const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -24,12 +30,17 @@ const CameraCapture = () => {
       });
       const data = await response.json();
       console.log('Server response:', data);
+      if(data.success){
+        const material = data.material_type;
+        console.log('Material type:', material);
+        openPopup(material);
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
     }
   };
 
-  const openPopup = () => {
+  const openPopup = (material) => {
     const popup = window.open(
       '', // empty URL = open a blank popup
       'confirmPhoto', // name (can be reused)
@@ -39,7 +50,7 @@ const CameraCapture = () => {
     popup.document.body.appendChild(rootEl);
 
     const root = ReactDOM.createRoot(rootEl);
-    root.render(<ConfirmPhoto popupWindow={popup} image={image}/>);
+    root.render(<ConfirmPhoto popupWindow={popup} image={image} setImage={setImage} material={material}/>);
   };
 
   return (
@@ -66,8 +77,8 @@ const CameraCapture = () => {
         <>
           <img src={image} alt="captured" style={{ width: 300 }} />
           <br />
-          <button onClick={openPopup}>Open Popup</button>
-          <button onClick={uploadImage}>Send to Python</button>
+          {/* <button onClick={openPopup}>Open Popup</button> */}
+          {/* <button onClick={uploadImage}>Send to Python</button> */}
           <button onClick={() => setImage(null)}>Retake</button>
         </>
       )}
