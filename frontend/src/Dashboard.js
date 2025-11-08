@@ -5,9 +5,9 @@ import Leaderboard from "./Components/Leaderboard";
 import WeekNavigator from "./Components/WeekNavigator";
 import "./Dashboard.css";
 
-const Dashboard = () => {
-  const USER_ID = 8; // Only show data for this user in charts
-
+const Dashboard = ({user_id}) => {
+  const USER_ID = parseInt(user_id); // Only show data for this user in charts
+  console.log(user_id);
   const [barData, setBarData] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
