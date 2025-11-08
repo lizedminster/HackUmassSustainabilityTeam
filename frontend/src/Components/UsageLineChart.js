@@ -1,4 +1,3 @@
-// UsageLineChart.js
 import React from "react";
 import {
   LineChart as RechartsLineChart,
@@ -11,31 +10,23 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Helper: get all 7 dates of a week
-const getDatesOfWeek = (weekNumber, year) => {
-  const simple = new Date(year, 0, 1 + (weekNumber - 1) * 7);
-  const dayOfWeek = simple.getDay(); // 0 = Sunday
-  const weekStart = new Date(simple);
-  weekStart.setDate(simple.getDate() - dayOfWeek + 1); // Make Monday start
-  const weekDates = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(weekStart);
-    d.setDate(weekStart.getDate() + i);
-    weekDates.push(d);
-  }
-  return weekDates;
-};
+const UsageLineChart = ({ data }) => {
+  if (!data || data.length === 0) return null;
 
-const UsageLineChart = ({ data, week }) => {
-  const year = new Date().getFullYear();
-  const weekDates = getDatesOfWeek(week, year);
+  // Sunday → Saturday static axis
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const graphData = weekDates.map((d) => {
-    const dateStr = d.toISOString().split("T")[0];
-    const found = data.find((item) => item.date === dateStr);
+  const graphData = daysOfWeek.map((dayAbbrev) => {
+    const found = data.find((d) => {
+      const day = new Date(d.date).toLocaleDateString("en-US", {
+        weekday: "short",
+        timeZone: "UTC",
+      });
+      return day === dayAbbrev;
+    });
+
     return {
-      date: dateStr,
-      day: d.toLocaleDateString("en-US", { weekday: "short" }),
+      day: dayAbbrev,
       value: found ? found.value : 0,
     };
   });
@@ -43,7 +34,10 @@ const UsageLineChart = ({ data, week }) => {
   return (
     <div>
       <ResponsiveContainer width="100%" height={300}>
-        <RechartsLineChart data={graphData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <RechartsLineChart
+          data={graphData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="day" />
           <YAxis />
