@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
 import { FaCamera } from "react-icons/fa";
+import ConfirmPhoto from './ConfirmPhoto';
+import ReactDOM from 'react-dom/client';
 
 const CameraCapture = () => {
   const webcamRef = useRef(null);
@@ -25,7 +27,20 @@ const CameraCapture = () => {
     } catch (error) {
       console.error('Error uploading image:', error);
     }
-  };  
+  };
+
+  const openPopup = () => {
+    const popup = window.open(
+      '', // empty URL = open a blank popup
+      'confirmPhoto', // name (can be reused)
+      'width=400,height=400,left=200,top=200' // window features
+    );
+    const rootEl = popup.document.createElement('div');
+    popup.document.body.appendChild(rootEl);
+
+    const root = ReactDOM.createRoot(rootEl);
+    root.render(<ConfirmPhoto popupWindow={popup} image={image}/>);
+  };
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -51,6 +66,7 @@ const CameraCapture = () => {
         <>
           <img src={image} alt="captured" style={{ width: 300 }} />
           <br />
+          <button onClick={openPopup}>Open Popup</button>
           <button onClick={uploadImage}>Send to Python</button>
           <button onClick={() => setImage(null)}>Retake</button>
         </>
