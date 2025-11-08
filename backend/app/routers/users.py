@@ -30,7 +30,7 @@ async def login(request: Request):
     # Generate JWT token
     secret = os.getenv("JWT_SECRET", "supersecret")
     token = jwt.encode({"user_id": user["id"], "username": user["username"]}, secret, algorithm="HS256")
-    return {"token": token}
+    return {"token": token, "user_id": user["id"]}
 
 @router.get("/", response_model=List[Dict])
 def read_users():

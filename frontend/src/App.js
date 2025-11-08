@@ -8,6 +8,7 @@ import Register from './Register';
 function App() {
   // initialize from localStorage so refresh doesn't force re-login
   const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [user_id, setUserID] = useState(() => localStorage.getItem('user_id'));
 
   useEffect(() => {
     if (token) {
@@ -17,12 +18,20 @@ function App() {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (user_id) {
+      localStorage.setItem('user_id', user_id);
+    } else {
+      localStorage.removeItem('user_id');
+    }
+  }, [user_id]);
+
   return (
     <Routes>
       {/* Login page */}
       <Route
         path="/Auth"
-        element={token ? <Navigate to="/app" /> : <AuthPage setToken={setToken} />}
+        element={token ? <Navigate to="/app" /> : <AuthPage setToken={setToken} setUserID={setUserID} />}
       />
 
       {/* Register page */}
@@ -34,16 +43,7 @@ function App() {
         element={
           token ? (
             <div className="App">
-              {/* <header className="App-header">
-                <h1>RecycleTime</h1>
-                <div>
-                  <TextBox />
-                </div>
-                <div>
-                  <CameraCapture />
-                </div>
-              </header> */}
-              <TabsContainer />
+              <TabsContainer user_id={user_id} />
             </div>
           ) : (
             <Navigate to="/Auth" />

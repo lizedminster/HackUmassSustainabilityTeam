@@ -1,10 +1,11 @@
 import React from "react";
 
-const ConfirmPhoto = ({ popupWindow, image, setImage, material }) => {
+const ConfirmPhoto = ({ popupWindow, image, setImage, material, user_id }) => {
   const handleClose = () => {
     if (popupWindow && !popupWindow.closed) {
       popupWindow.close();
     }
+    setImage(null);
   };
 
   const uploadRecycle = async (material) => {  
@@ -13,12 +14,11 @@ const ConfirmPhoto = ({ popupWindow, image, setImage, material }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            "user_id": 8,
+            "user_id": user_id,
             "material_type": material
           }),
       });
       const data = await response.json();
-      console.log('Server response:', data);
       if (popupWindow && !popupWindow.closed) {
         setImage(null);
         popupWindow.close();

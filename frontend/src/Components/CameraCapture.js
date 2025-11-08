@@ -4,7 +4,7 @@ import { FaCamera } from "react-icons/fa";
 import ConfirmPhoto from './ConfirmPhoto';
 import ReactDOM from 'react-dom/client';
 
-const CameraCapture = () => {
+const CameraCapture = ({user_id}) => {
   const webcamRef = useRef(null);
   const [image, setImage] = useState(null);
 
@@ -29,10 +29,8 @@ const CameraCapture = () => {
         body: JSON.stringify({ image }), // base64 string
       });
       const data = await response.json();
-      console.log('Server response:', data);
       if(data.success){
         const material = data.material_type;
-        console.log('Material type:', material);
         openPopup(material);
       }
     } catch (error) {
@@ -50,7 +48,7 @@ const CameraCapture = () => {
     popup.document.body.appendChild(rootEl);
 
     const root = ReactDOM.createRoot(rootEl);
-    root.render(<ConfirmPhoto popupWindow={popup} image={image} setImage={setImage} material={material}/>);
+    root.render(<ConfirmPhoto popupWindow={popup} image={image} setImage={setImage} material={material} user_id={user_id}/>);
   };
 
   return (

@@ -3,7 +3,7 @@ import CameraCapture from './Components/CameraCapture';
 import TextBox from './Components/TextBox';
 
 
-function CameraPage() {
+function CameraPage({user_id}) {
   return (
     <div className="App">
       <header className="App-header">
@@ -14,7 +14,7 @@ function CameraPage() {
           <TextBox />
         </div>
         <div>
-          <CameraCapture />
+          <CameraCapture user_id={user_id} />
         </div>
       </header>
     </div>
