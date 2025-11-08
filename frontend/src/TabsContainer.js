@@ -3,7 +3,7 @@ import CameraPage from "./CameraPage";
 import SharePage from "./SharePage";
 import Dashboard from "./Dashboard";
 
-function TabsContainer() {
+function TabsContainer({user_id}) {
   const [activeTab, setActiveTab] = useState("camera");
   return (
     <div>
@@ -15,7 +15,7 @@ function TabsContainer() {
       </div>
       <div className="tab-content">
         {activeTab === "share" && <SharePage />}
-        {activeTab === "camera" && <CameraPage />}
+        {activeTab === "camera" && <CameraPage user_id={user_id} />}
         {activeTab === "dashboard" && <Dashboard />}
 
       </div>

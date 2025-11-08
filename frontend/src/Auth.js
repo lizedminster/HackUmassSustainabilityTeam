@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // import useNavigate
 
-function AuthPage({ setToken }) {
+function AuthPage({ setToken, setUserID }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,6 +22,7 @@ function AuthPage({ setToken }) {
       const data = await response.json();
       if (response.ok && data.token) {
         setToken(data.token);
+        setUserID(data.user_id);
       } else {
         setError(data.detail || 'Login failed');
       }
