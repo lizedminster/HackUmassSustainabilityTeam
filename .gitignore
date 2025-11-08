@@ -1,11 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /hack2025
 /__pycache__
-/.pnp
-.pnp.js
 
 # testing
 /coverage
