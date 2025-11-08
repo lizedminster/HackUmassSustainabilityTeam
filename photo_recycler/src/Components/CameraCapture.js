@@ -11,6 +11,22 @@ const CameraCapture = () => {
     setImage(imageSrc);
   };
 
+  const uploadImage = async () => {
+    if (!image) return;
+  
+    try {
+      const response = await fetch('http://localhost:8000/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image }), // base64 string
+      });
+      const data = await response.json();
+      console.log('Server response:', data);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };  
+
   return (
     <div style={{ textAlign: 'center' }}>
       <h3>Take a Picture of the Item</h3>
@@ -35,6 +51,7 @@ const CameraCapture = () => {
         <>
           <img src={image} alt="captured" style={{ width: 300 }} />
           <br />
+          <button onClick={uploadImage}>Send to Python</button>
           <button onClick={() => setImage(null)}>Retake</button>
         </>
       )}
