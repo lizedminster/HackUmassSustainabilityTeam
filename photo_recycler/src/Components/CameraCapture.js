@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
+import { FaCamera } from "react-icons/fa";
 
 const CameraCapture = () => {
   const webcamRef = useRef(null);
@@ -12,7 +13,7 @@ const CameraCapture = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <h2>Take a Picture of the Item</h2>
+      <h3>Take a Picture of the Item</h3>
 
       {!image ? (
         <>
@@ -26,7 +27,9 @@ const CameraCapture = () => {
             style={{ width: 300 }}
           />
           <br />
-          <button onClick={capture}>Take Picture</button>
+          <div>
+            <button onClick={capture}><FaCamera /></button>
+          </div>
         </>
       ) : (
         <>

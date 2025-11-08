@@ -1,15 +1,11 @@
-import './App.css';
 import React from 'react';
 import CameraCapture from './Components/CameraCapture';
 import TextBox from './Components/TextBox';
-import Tabs from './Components/Tabs';
-import Tab from './Components/Tab';
-import TabsContainer from './TabsContainer';
 
-function App() {
+function CameraPage() {
   return (
     <div className="App">
-      {/* <header className="App-header">
+      <header className="App-header">
         <h1>
           RecycleTime
         </h1>
@@ -19,10 +15,9 @@ function App() {
         <div>
           <CameraCapture />
         </div>
-      </header> */}
-      <TabsContainer />
+      </header>
     </div>
   );
 }
 
-export default App;
+export default CameraPage;
