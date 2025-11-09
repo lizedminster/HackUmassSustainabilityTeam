@@ -158,7 +158,7 @@ const CameraCapture = ({ user_id }) => {
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={{ facingMode: 'environment' }}
-            style={{ width: 700, borderRadius: '10px' }}
+            style={{ width: 700, borderRadius: '10px'}}
           />
           <br />
           <button
@@ -192,7 +192,7 @@ const CameraCapture = ({ user_id }) => {
           />
         )}
 
-        {uploading && <p>Analyzing material...</p>}
+        {uploading && <p className='center-stuff'>Analyzing material...</p>}
 
         {!uploading && material && (
           <div className="center-stuff">

@@ -3,6 +3,8 @@
 body {
   margin: 0;
   font-family: 'Arial', sans-serif;
+
+    z-index: 10;
 }
 
 .register-page {
@@ -11,6 +13,8 @@ body {
   align-items: center;
   height: 100vh;
   background: linear-gradient(to bottom right, #5e795e, #1d4a27bd);
+
+    z-index: 10;
 }
 
 .register-container {
@@ -20,6 +24,8 @@ body {
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   width: 380px;
   text-align: center;
+
+    z-index: 10;
 }
 
 .register-title {
@@ -27,12 +33,16 @@ body {
   margin-bottom: 30px;
   font-size: 2em;
   font-weight: bold;
+
+    z-index: 10;
 }
 
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+    z-index: 10;
 }
 
 .register-label {
@@ -41,6 +51,8 @@ body {
   text-align: left;
   font-weight: bold;
   color: #5e795e;
+
+    z-index: 10;
 }
 
 .register-input {
@@ -50,21 +62,29 @@ body {
   border: 1px solid #5e795e;
   outline: none;
   transition: 0.2s;
+
+    z-index: 10;
 }
 
 .register-input:focus {
   border-color: #1d4a27bd;
   box-shadow: 0 0 5px #1d4a27bd;
+
+    z-index: 10;
 }
 
 .color-picker-container {
   margin-top: 20px;
   margin-bottom: 10px;
+
+    z-index: 10;
 }
 
 .selected-color {
   margin-top: 8px;
   font-weight: bold;
+
+    z-index: 10;
 }
 
 .register-button {
@@ -76,10 +96,14 @@ body {
   font-size: 1em;
   cursor: pointer;
   transition: 0.3s;
+
+    z-index: 10;
 }
 
 .register-button:hover {
   background-color: #5e795e;
+
+    z-index: 10;
 }
 
 .back-login-button {
@@ -91,15 +115,21 @@ body {
   padding: 10px;
   cursor: pointer;
   transition: 0.3s;
+
+    z-index: 10;
 }
 
 .back-login-button:hover {
   background-color: #1d4a27bd;
   color: white;
+
+    z-index: 10;
 }
 
 .register-error {
   color: red;
   margin-top: 10px;
   font-weight: bold;
+
+    z-index: 10;
 }

@@ -10,6 +10,8 @@
   font-family: "Inter", system-ui, sans-serif;
   margin-bottom: 16px;
   transition: all 0.2s ease-in-out;
+
+    z-index:10;
 }
 
 .week-label {
@@ -20,6 +22,8 @@
   border-radius: 8px;
   box-shadow: inset 0 0 0 1px #e2e8f0;
   font-size: 0.95rem;
+
+    z-index:10;
 }
 
 .week-btn {
@@ -31,15 +35,21 @@
   padding: 8px 14px;
   cursor: pointer;
   transition: all 0.2s ease;
+
+    z-index:10;
 }
 
 .week-btn:hover:not(:disabled) {
   background-color: #0e2b14bd;
   transform: translateY(-1px);
+
+    z-index:10;
 }
 
 .week-btn:disabled {
   background-color: #cbd5e1;
   cursor: not-allowed;
   transform: none;
+
+    z-index:10;
 }

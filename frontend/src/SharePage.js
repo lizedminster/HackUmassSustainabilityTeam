@@ -57,7 +57,7 @@ function SharePage({ user_id }) {
         <h1>Your Recycling Stats!</h1>
         <h3 style={{marginTop: '0px'}}>{user?.username || "Loading..."}</h3>
 
-        <table style={{ marginTop: "00px", borderCollapse: "collapse", marginBottom: "30px" }}>
+        <table className="stats-table" style={{ marginTop: "00px", borderCollapse: "collapse", marginBottom: "30px"}}>
           <thead>
             <tr>
               <th style={{ border: "2px solid white", padding: "8px" }}>

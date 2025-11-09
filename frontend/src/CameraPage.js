@@ -7,10 +7,10 @@ function CameraPage({user_id}) {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 style={{marginBottom: '0px'}}>
+        <h1 style={{marginBottom: '0px', zIndex: 10}}>
           RecycleTime
         </h1>
-        <div style={{paddingTop: '0px'}}>
+        <div style={{paddingTop: '0px',zIndex: 10}}>
           <CameraCapture user_id={user_id} />
         </div>
       </header>

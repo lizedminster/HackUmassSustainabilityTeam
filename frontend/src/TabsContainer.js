@@ -38,6 +38,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
 
   // Styles
   const styles = {
+    
     container: {
       width: "100%",
       maxWidth: "100%",
@@ -47,6 +48,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
       overflow: "hidden",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      
     },
     tabsNavigation: {
       display: "flex",
