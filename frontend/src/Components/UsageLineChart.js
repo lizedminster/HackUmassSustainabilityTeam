@@ -43,7 +43,7 @@ const UsageLineChart = ({ data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="value" stroke="#8884d8" strokeWidth={2} />
+          <Line type="monotone" dataKey="Commits Per Day" stroke="#8884d8" strokeWidth={2} />
         </RechartsLineChart>
       </ResponsiveContainer>
     </div>
