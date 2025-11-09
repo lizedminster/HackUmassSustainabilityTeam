@@ -154,9 +154,10 @@ const Dashboard = ({ user_id }) => {
   return (
     <div className="Dashboard">
       <header className="Dashboard-header">
-        <h1>Dashboard Page</h1>
+        <h1>Dashboard</h1>
 
-        <div style={{ width: "80%", margin: "20px auto" }}>
+        <div style={{ width: "90%", margin: "20px auto" }}>
+          <h4>Your Submissions</h4>
           <WeekNavigator
             data={logs.map((log) => ({ date: formatDate(log.created_at) }))}
             onWeekChange={setSelectedWeek}
