@@ -26,11 +26,11 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       case "facts":
         return "0%";
       case "share":
-        return "0%";
-      case "camera":
         return "100%";
-      case "dashboard":
+      case "camera":
         return "200%";
+      case "dashboard":
+        return "300%";
       default:
         return "0%";
     }
@@ -69,7 +69,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       position: "absolute",
       bottom: 0,
       left: 0,
-      width: "33.3333%",
+      width: "20%",
       height: "3px",
       backgroundColor: "#0a2f12bd",
       transform: `translateX(${getUnderlinePosition()})`,

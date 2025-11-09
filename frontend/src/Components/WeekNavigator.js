@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./WeekNavigator.css";
 
 // Helper: get Sunday of the week from a date string
 const getSunday = (dateStr) => {
@@ -37,22 +38,33 @@ const WeekNavigator = ({ data, onWeekChange }) => {
   const handleNext = () =>
     setCurrentIndex((prev) => Math.min(prev + 1, weeks.length - 1));
 
-  const sunday = weeks[currentIndex] ? new Date(weeks[currentIndex] + "T00:00:00Z") : null;
-  const saturday = sunday ? new Date(sunday.getTime() + 6 * 24 * 60 * 60 * 1000) : null;
+  const sunday = weeks[currentIndex]
+    ? new Date(weeks[currentIndex] + "T00:00:00Z")
+    : null;
+  const saturday = sunday
+    ? new Date(sunday.getTime() + 6 * 24 * 60 * 60 * 1000)
+    : null;
 
   const formatDate = (d) => (d ? d.toISOString().split("T")[0] : "");
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-      <button onClick={handlePrev} disabled={currentIndex === 0 || weeks.length === 0}>
+    <div className="week-navigator">
+      <button
+        className="week-btn"
+        onClick={handlePrev}
+        disabled={currentIndex === 0 || weeks.length === 0}
+      >
         &lt; Previous
       </button>
-      <span style={{ fontWeight: "bold" }}>
+
+      <span className="week-label">
         {sunday && saturday
           ? `Week of ${formatDate(sunday)} to ${formatDate(saturday)}`
           : "No week data"}
       </span>
+
       <button
+        className="week-btn"
         onClick={handleNext}
         disabled={currentIndex === weeks.length - 1 || weeks.length === 0}
       >

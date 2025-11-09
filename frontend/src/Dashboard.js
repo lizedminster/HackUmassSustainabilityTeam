@@ -24,7 +24,6 @@ const Dashboard = ({ user_id }) => {
     "metal",
     "cardboard",
     "biodegradable",
-    "organic",
     "unknown",
   ];
 
