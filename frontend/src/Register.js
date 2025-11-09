@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HexColorPicker from './Components/HexColorPicker'; // ✅ import your picker
+import HexColorPicker from './Components/HexColorPicker';
+import './Register.css'; // Import CSS
 
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [hexcolor, setHexcolor] = useState('#4ECDC4'); // 🎨 default color
+  const [hexcolor, setHexcolor] = useState('#4ECDC4');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -16,11 +17,11 @@ function Register() {
       const response = await fetch('http://localhost:8000/users/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, hexcolor }), // ⬅️ include color
+        body: JSON.stringify({ username, password, hexcolor }),
       });
 
       if (response.ok) {
-        navigate('/Auth'); // ✅ go to login after success
+        navigate('/Auth');
       } else {
         const data = await response.json();
         setUsername('');
@@ -37,14 +38,15 @@ function Register() {
   };
 
   return (
-    <div className="App">
-      <div className="App-header">
-        <h1>Create an account</h1>
+    <div className="register-page">
+      <div className="register-container">
+        <h1 className="register-title">Create an Account</h1>
 
-        <form onSubmit={handleRegister}>
-          <label>
+        <form className="register-form" onSubmit={handleRegister}>
+          <label className="register-label">
             Username
             <input
+              className="register-input"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -52,9 +54,10 @@ function Register() {
             />
           </label>
 
-          <label>
+          <label className="register-label">
             Password
             <input
+              className="register-input"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -62,32 +65,28 @@ function Register() {
             />
           </label>
 
-          {/* 🎨 Add the color picker */}
-          <div style={{ marginTop: '20px', marginBottom: '10px' }}>
+          <div className="color-picker-container">
             <HexColorPicker
               label="Choose your circle color"
               defaultColor={hexcolor}
               onChange={setHexcolor}
             />
-            <p style={{ marginTop: '8px' }}>
+            <p className="selected-color">
               Selected color: <span style={{ color: hexcolor }}>{hexcolor}</span>
             </p>
           </div>
 
-          <button type="submit" style={{ marginTop: '10px' }}>
-            Register
-          </button>
+          <button className="register-button" type="submit">Register</button>
         </form>
 
-        {/* Back to Login button */}
         <button
-          style={{ marginTop: '15px' }}
+          className="back-login-button"
           onClick={() => navigate('/Auth')}
         >
           Back to Login
         </button>
 
-        {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+        {error && <div className="register-error">{error}</div>}
       </div>
     </div>
   );

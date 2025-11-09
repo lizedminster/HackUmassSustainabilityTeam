@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // import useNavigate
+import { useNavigate } from 'react-router-dom';
+import './Auth.css'; // We'll put styles here
 
-function AuthPage({ setToken, setUserID }) {
+function Auth({ setToken, setUserID }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const navigate = useNavigate(); // initialize navigate
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -14,9 +15,7 @@ function AuthPage({ setToken, setUserID }) {
     try {
       const response = await fetch('http://localhost:8000/users/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
@@ -32,47 +31,42 @@ function AuthPage({ setToken, setUserID }) {
   };
 
   return (
-    <div className="App">
-      <div className="App-header">
-        <h1>RecycleTime</h1>
-        <div className="sign-in-div">
-          <form onSubmit={handleSignIn}>
-            <label>
-              Username
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </label>
-            <button className="sign-in-btn" type="submit">
-              Sign In
-            </button>
-          </form>
-
-          {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
-
-          {/* Register button */}
-          <button
-            style={{ marginTop: '10px' }}
-            onClick={() => navigate('/register')} // redirect to Register.js
-          >
-            Register
-          </button>
-        </div>
+    <div className="auth-page">
+      <div className="auth-container">
+        <h1 className="auth-title">RecycleTime</h1>
+        <form className="auth-form" onSubmit={handleSignIn}>
+          <label className="auth-label">
+            Username
+            <input
+              className="auth-input"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+          <label className="auth-label">
+            Password
+            <input
+              className="auth-input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <button className="auth-button" type="submit">Sign In</button>
+        </form>
+        {error && <div className="auth-error">{error}</div>}
+        <button
+          className="auth-register-btn"
+          onClick={() => navigate('/register')}
+        >
+          Register
+        </button>
       </div>
     </div>
   );
 }
 
-export default AuthPage;
+export default Auth;

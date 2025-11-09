@@ -1,0 +1,96 @@
+/* AuthPage.css */
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #5e795e; /* soft green background */
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #5e795e, #1d4a27bd);
+}
+
+.auth-container {
+  background-color: white;
+  padding: 40px 50px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  width: 350px;
+  text-align: center;
+}
+
+.auth-title {
+  color: #1d4a27bd;
+  margin-bottom: 30px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-label {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  font-weight: bold;
+  color: #5e795e;
+}
+
+.auth-input {
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #5e795e;
+  outline: none;
+  transition: 0.2s;
+}
+
+.auth-input:focus {
+  border-color: #1d4a27bd;
+  box-shadow: 0 0 5px #1d4a27bd;
+}
+
+.auth-button {
+  background-color: #1d4a27bd;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #5e795e;
+}
+
+.auth-register-btn {
+  margin-top: 15px;
+  background-color: white;
+  color: #1d4a27bd;
+  border: 2px solid #1d4a27bd;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-register-btn:hover {
+  background-color: #1d4a27bd;
+  color: white;
+}
+
+.auth-error {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+}
