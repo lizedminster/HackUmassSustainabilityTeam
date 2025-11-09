@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CameraPage from "./CameraPage";
 import SharePage from "./SharePage";
 import Dashboard from "./Dashboard";
 
-function TabsContainer({ user_id }) {
+function TabsContainer({ user_id, setToken, setUserID }) {
   const [activeTab, setActiveTab] = useState("camera");
+  const navigate = useNavigate();
 
   // Helper for the underline transform
   const getUnderlinePosition = () => {
@@ -36,6 +38,7 @@ function TabsContainer({ user_id }) {
       display: "flex",
       position: "relative",
       backgroundColor: "#f9f9f9",
+      alignItems: "center",
     },
     tab: (isActive) => ({
       flex: 1,
@@ -63,6 +66,28 @@ function TabsContainer({ user_id }) {
       fontSize: "15px",
       color: "#333",
     },
+    switchButton: {
+      marginLeft: "20px",
+      padding: "8px 12px",
+      backgroundColor: "#f00",
+      color: "#fff",
+      border: "none",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: 500,
+      fontSize: "14px",
+    },
+  };
+
+  const handleSwitchAccount = () => {
+    // Clear token and user ID
+    setToken(null);
+    setUserID(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userID");
+
+    // Redirect to login page
+    navigate("/Auth");
   };
 
   return (
@@ -86,6 +111,12 @@ function TabsContainer({ user_id }) {
         >
           Dashboard
         </button>
+
+        {/* Switch Account button */}
+        <button style={styles.switchButton} onClick={handleSwitchAccount}>
+          Switch Account
+        </button>
+
         <span style={styles.tabUnderline} />
       </div>
 

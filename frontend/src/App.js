@@ -6,47 +6,53 @@ import AuthPage from './Auth';
 import Register from './Register';
 
 function App() {
-  // initialize from localStorage so refresh doesn't force re-login
+  // Initialize state from localStorage so refresh doesn't force re-login
   const [token, setToken] = useState(() => localStorage.getItem('token'));
-  const [user_id, setUserID] = useState(() => localStorage.getItem('user_id'));
+  const [userID, setUserID] = useState(() => localStorage.getItem('userID'));
 
+  // Sync token to localStorage
   useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
+    if (token) localStorage.setItem('token', token);
+    else localStorage.removeItem('token');
   }, [token]);
 
+  // Sync userID to localStorage
   useEffect(() => {
-    if (user_id) {
-      localStorage.setItem('user_id', user_id);
-    } else {
-      localStorage.removeItem('user_id');
-    }
-  }, [user_id]);
+    if (userID) localStorage.setItem('userID', userID);
+    else localStorage.removeItem('userID');
+  }, [userID]);
 
   return (
     <Routes>
-      {/* Login page */}
+      {/* Auth page */}
       <Route
-        path="/Auth"
-        element={token ? <Navigate to="/app" /> : <AuthPage setToken={setToken} setUserID={setUserID} />}
+        path="/auth"
+        element={
+          token ? (
+            <Navigate to="/app" />
+          ) : (
+            <AuthPage setToken={setToken} setUserID={setUserID} />
+          )
+        }
       />
 
       {/* Register page */}
-      <Route path="/register" element={<Register />} /> 
+      <Route path="/register" element={<Register />} />
 
-      {/* Main app (tabs) */}
+      {/* Main app */}
       <Route
         path="/*"
         element={
           token ? (
             <div className="App">
-              <TabsContainer user_id={user_id} />
+              <TabsContainer
+                user_id={userID}
+                setToken={setToken}
+                setUserID={setUserID}
+              />
             </div>
           ) : (
-            <Navigate to="/Auth" />
+            <Navigate to="/auth" />
           )
         }
       />
