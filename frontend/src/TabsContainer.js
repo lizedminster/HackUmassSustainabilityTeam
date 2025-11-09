@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CameraPage from "./CameraPage";
 import SharePage from "./SharePage";
 import Dashboard from "./Dashboard";
+import FastFacts from "./FastFacts";
 
 function TabsContainer({ user_id, setToken, setUserID }) {
   const [activeTab, setActiveTab] = useState("camera");
@@ -11,6 +12,8 @@ function TabsContainer({ user_id, setToken, setUserID }) {
   // Helper for the underline transform
   const getUnderlinePosition = () => {
     switch (activeTab) {
+      case "facts":
+        return "0%";
       case "share":
         return "0%";
       case "camera":
@@ -93,6 +96,9 @@ function TabsContainer({ user_id, setToken, setUserID }) {
   return (
     <div style={styles.container}>
       <div style={styles.tabsNavigation}>
+      <button style={styles.tab(activeTab === "facts")} onClick={() => setActiveTab("facts")}>
+          Fast Facts
+        </button>
         <button
           style={styles.tab(activeTab === "share")}
           onClick={() => setActiveTab("share")}
@@ -121,6 +127,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       </div>
 
       <div style={styles.tabContent}>
+        {activeTab === "facts" && <FastFacts user_id={user_id} />}
         {activeTab === "share" && <SharePage user_id={user_id} />}
         {activeTab === "camera" && <CameraPage user_id={user_id} />}
         {activeTab === "dashboard" && <Dashboard user_id={user_id} />}
