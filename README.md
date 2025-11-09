@@ -1,30 +1,71 @@
 # RecycleTime
-Description
+This is a website that allows people to quickly see whether they should recycle by taking a picture of the item. Users can create an account or sign into their existing account. Then they take a photo of their trash which then uses a yolov5 model to identify the material and lets the user know whether they should recycle it. There are also a fast fact tab for quick recycling tips, a dashboard to see how many items they have recycled, a stats tab to see how many of each material you recycle, and a tab to switch accounts.
+
+## Project Structure
+
+Here is the overarching folder structure:
+
+```
+HackUmassSustainabilityTeam/
+├── backend/                                # Backend
+│   ├── app/
+│   │   ├── main.py                        # FastAPI app entry point
+│   │   ├── supabase_client.py             # Supabase connection setup
+│   │   ├── routers/                    # API route definitions
+│   │   │   ├── users.py
+│   │   │   ├── recycle_log.py
+│   │   │   └── detection.py
+│   │   └── services/                   # Logic + database operations
+│   │       ├── user_service.py
+│   │       ├── recycle_log_service.py
+│   │       ├── detection_service.py
+│   │       └── background_service.py
+│   │   
+│   └── requirements.txt                   # Backend dependencies
+│
+├── frontend/                               # Frontend
+│   ├── public/
+│   │   └── index.html                     # HTML entry point for React
+│   ├── src/
+│   │   ├── Components/                    # Components for the website pages
+│   │   │   ├── CameraCapture.js
+│   │   │   ├── ConfirmPhoto.js
+│   │   │   ├── Leaderboard.js
+│   │   │   ├── UsageLineChart.js
+│   │   │   ├── WeeklyBarChart.js
+│   │   │   ├── WeekNavigator.js
+│   │   │   └── HexColorPicker.js
+│   │   ├── FastFacts.js
+│   │   ├── TabsContainer.js
+│   │   ├── App.js                         # Main React component
+│   │   ├── SharePage.js
+│   │   ├── Register.js
+│   │   ├── Dashboard.js
+│   │   ├── CameraPage.js
+│   │   ├── Auth.js
+│   │   ├── index.js                       # React entry point
+│   │   └── styles.css                     
+│   └── package.json                       # Frontend dependencies
+│
+├── .gitignore
+└── README.md                              # Main documentation file
+```
+
+## API Endpoints
+
+Prefix: /users
+- POST /users/ → add a new user
+- POST /users/login → user login authentication
+
+Prefix: /recycle_log
+- POST /recycleLog/ → add a new recycle log
+- GET /recycleLog/ → get all recycle logs
+
+Prefix: /upload
+- POST /upload → upload an image to remove the background and then use a model to classify the material it is made of
 
 ## Setup and Installation
 
-### Project Structure
-
-### API Endpoints
-Users (user management)
-
-Prefix: /users
-Router: app.routers.users — see users.py and its router included in main.py (app.include_router(users.router, prefix="/users", tags=["Users"])).
-Recycle log (records of recycled items)
-
-Prefix: /recycle_log
-Router: app.routers.recycle_log — see recycle_log.py and inclusion in main.py (app.include_router(recycle_log.router, prefix="/recycle_log", tags=["recycle_log"])).
-Detection (image classification / YOLO)
-
-Prefix: /detect
-Router: app.routers.detection — see detection.py and inclusion in main.py (app.include_router(detection.router, prefix="/detect", tags=["Detection"])).
-Related service: app.services.detection_service.detect_material — see detection_service.py.
-Background removal / image upload
-
-Endpoint: POST /upload
-Implementations:
-Background removal endpoint referenced/defined in main.py (Background Removal Code block and call to app.services.background_service.remove_background). See app.services.background_service.remove_background — background_service.py.
-Separate test script with its own FastAPI app and POST /upload: testingBackgroundRemoval.py (contains app.post("/upload") example and CORS setup).
 ### Backend setup
 The backend is a FastAPI that runs on localhost:8000. First, acquire the .env file with the database url and key. Then open a terminal in VSCode and paste the following commands:
 ```
@@ -44,20 +85,20 @@ npm install
 npm start  # start the frontend
 ```
 
-### Features
+## Features
 - **Image Classification:** Capture images of items using a camera or upload images to classify whether the item is recyclable using YOLOv5.  
 - **Live Camera Integration:** Directly interact with your webcam to classify items in real-time.  
 - **Statistics Page and Dashboard:** View visual analytics of recycling trends, including total items recycled, category breakdowns, and historical data.  
 - **Database Integration:** All user interactions and item data are stored in a database for persistent tracking.  
 
-### Technologies Used
+## Technologies Used
 - **Backend:** FastAPI, Uvicorn, Python  
 - **Frontend:** React, JavaScript  
 - **Machine Learning:** YOLOv5 for image classification  
 - **Database:** PostgreSQL in Supabase  
 - **Visualization:** Chart.js or Recharts for dashboard statistics  
 
-### Contributing
+## Contributing
 To contribute to the project:  
 1. Fork the repository.  
 2. Create a new feature branch (`git checkout -b feature-name`).  
