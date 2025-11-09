@@ -6,7 +6,6 @@
   align-items: center;
   background: linear-gradient(to bottom right, #5e795e, #1d4a27bd);
 
-  z-index: 10000;
 }
 
 
@@ -14,7 +13,6 @@
 .h1, .h2 {
   padding: 0px;
  
-  z-index:10;
 }
 
 .App-logo {
