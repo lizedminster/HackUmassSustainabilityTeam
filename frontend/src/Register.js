@@ -6,7 +6,7 @@ import './Register.css'; // Import CSS
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [hexcolor, setHexcolor] = useState('#4ECDC4');
+  const [hexcolor, setHexcolor] = useState("#0a3f08ff");
   const [error, setError] = useState('');
   const navigate = useNavigate();
 

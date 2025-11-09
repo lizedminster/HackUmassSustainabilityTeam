@@ -1,47 +1,58 @@
 /* HexColorPicker.css */
 
-.color-picker-wrapper {
+.color-picker {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 10px 0;
+  gap: 10px;
+  margin: 20px 0;
 }
 
 .color-picker-label {
   font-weight: bold;
   color: #5e795e;
-  min-width: 120px;
+  font-size: 1em;
 }
 
-.color-picker-input {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #1d4a27bd;
-  border-radius: 8px;
+.swatch-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-swatch {
+  width: 50px;
+  height: 50px;
+  border: none;
   cursor: pointer;
-  padding: 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
 }
 
-.color-picker-text {
-  width: 100px;
-  padding: 6px;
-  border-radius: 8px;
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-text-input {
+  width: 120px;
+  padding: 6px 10px;
+  border-radius: 20px;
   border: 1px solid #5e795e;
+  text-align: center;
   font-family: monospace;
-  text-transform: uppercase;
-  color: #1d4a27bd;
   font-weight: bold;
+  color: #1d4a27bd;
+  transition: 0.2s;
 }
 
-.color-picker-text:focus {
+.color-text-input:focus {
   outline: none;
   border-color: #1d4a27bd;
   box-shadow: 0 0 5px #1d4a27bd;
 }
 
-.color-picker-preview {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #5e795e;
-  border-radius: 8px;
+.selected-color-text {
+  font-weight: bold;
+  color: #1d4a27bd;
+  margin-top: 5px;
 }

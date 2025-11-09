@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './HexColorPicker.css';
 
-const HexColorPicker = ({ label = "Select Color", defaultColor = "#154118", onChange }) => {
+const HexColorPicker = ({ label = "Circle Color", defaultColor = "#0a3f08ff", onChange }) => {
   const [color, setColor] = useState(defaultColor);
   const [inputValue, setInputValue] = useState(defaultColor);
 
@@ -22,28 +22,29 @@ const HexColorPicker = ({ label = "Select Color", defaultColor = "#154118", onCh
   };
 
   return (
-    <div className="color-picker-wrapper">
-      <label className="color-picker-label">{label}:</label>
+    <div className="color-picker">
+      <label className="color-picker-label">{label}</label>
 
-      <input
-        type="color"
-        value={color}
-        onChange={(e) => handleColorChange(e.target.value)}
-        className="color-picker-input"
-      />
+      <div className="swatch-container">
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => handleColorChange(e.target.value)}
+          className="color-swatch"
+        />
+      </div>
 
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         maxLength={7}
-        className="color-picker-text"
+        className="color-text-input"
       />
 
-      <div
-        className="color-picker-preview"
-        style={{ backgroundColor: color }}
-      />
+      <p className="selected-color-text">
+        Selected color: <span style={{ color }}>{color}</span>
+      </p>
     </div>
   );
 };
