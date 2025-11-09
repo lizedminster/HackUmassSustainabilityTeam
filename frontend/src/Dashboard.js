@@ -1,5 +1,4 @@
-// Dashboard.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import UsageLineChart from "./Components/UsageLineChart";
 import WeeklyBarChart from "./Components/WeeklyBarChart";
 import Leaderboard from "./Components/Leaderboard";

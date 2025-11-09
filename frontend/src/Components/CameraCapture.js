@@ -18,54 +18,48 @@ const CameraCapture = ({ user_id }) => {
   // Detect material type
   // ----------------------------
   const detectMaterial = async (imageSrc) => {
-    setUploading(true);
-    try {
-      const response = await fetch('http://localhost:8000/upload/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: imageSrc }),
-      });
+  try {
+    const response = await fetch('http://localhost:8000/upload/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: imageSrc }),
+    });
 
-      if (!response.ok) {
-        throw new Error(`Detection failed: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log('Detection result:', result);
-
-      // Accepts different backend response field names
-      return (
-        result.material_type ||
-        result.material ||
-        result.detected_material ||
-        'Unknown'
-      );
-    } catch (error) {
-      console.error('Error during detection:', error);
-      return 'Error detecting material';
-    } finally {
-      setUploading(false);
+    if (!response.ok) {
+      throw new Error(`Detection failed: ${response.status}`);
     }
-  };
+
+    const result = await response.json();
+    console.log('Detection result:', result);
+
+    return (
+      result.material_type ||
+      result.material ||
+      result.detected_material ||
+      'Unknown'
+    );
+  } catch (error) {
+    console.error('Error during detection:', error);
+    return 'Error detecting material';
+  }
+};
 
   // ----------------------------
   // Capture & analyze photo
   // ----------------------------
   const capture = async () => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    if (!imageSrc) return;
+  const imageSrc = webcamRef.current.getScreenshot();
+  if (!imageSrc) return;
 
-    setImage(imageSrc);
-    setUploading(true);
+  setImage(imageSrc);
+  setModalIsOpen(true); // open modal first so user can see loading
+  setUploading(true);   // show spinner/loading text immediately
 
-    // Detect before opening modal
-    const detectedMaterial = await detectMaterial(imageSrc);
-    setMaterial(detectedMaterial);
+  const detectedMaterial = await detectMaterial(imageSrc);
+  setMaterial(detectedMaterial);
 
-    setUploading(false);
-    setModalIsOpen(true);
-  };
-
+  setUploading(false);  // hide loading after detection
+};
   // ----------------------------
   // Save recycling log
   // ----------------------------
