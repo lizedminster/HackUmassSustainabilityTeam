@@ -110,12 +110,20 @@ function FastFacts() {
                 info: "Household batteries (AA, AAA, etc.) can go in household trash, but rechargeable or lithium batteries require special disposal.",
               },
               {
+                item: "Biodegradable Waste",
+                info: "Biodegradable waste cannot be recycled, but it can be composted at home in a compost bin or at municipal collection programs.",
+              },
+              {
                 item: "Bottles",
                 info: "If smaller than 2 gallons and not containing toxic material, they can be recycled in the household container recycling mix.",
               },
               {
                 item: "Cans",
                 info: "Steel, tin, and aluminum cans smaller than 2 gallons are recyclable.",
+              },
+              {
+                item: "Cardboard",
+                info: "Cardboard can be recycled in your household paper recycling. Make sure there is no food residue such as pizza grease or Chinese take-out containers.",
               },
               {
                 item: "Cartons and Drink Boxes",
@@ -126,6 +134,10 @@ function FastFacts() {
                 info: "Paper, plastic, and foam cartons are not recyclable. Paper ones can be composted or reused.",
               },
               {
+                item: "Glass",
+                info: "Most glass food and beverage bottles and jars smaller than 2 gallons in size may be included in your mixed container recycling bin. All broken glass should go in the trash.",
+              },
+              {
                 item: "Light Bulbs",
                 info: "Incandescent bulbs are not recyclable and should be disposed of in household trash.",
               },
@@ -134,8 +146,20 @@ function FastFacts() {
                 info: "Softcover magazines and catalogs go with mixed paper recycling.",
               },
               {
+                item: "Metal",
+                info: "Scrap metal is accepted at the Transfer Station. Disposal fees apply.",
+              },
+              {
                 item: "Newspapers",
                 info: "Clean newspapers and inserts can go in mixed paper recycling.",
+              },
+              {
+                item: "Paper",
+                info: "Paper can be recycled in your household paper recycling. Store receipts can also be recycled. Carbon and thermal paper are not recyclable.",
+              },
+              {
+                item: "Plastic",
+                info: "Plastic shopping bags and other thin plastics like cling wrap cannot be placed in recycling bins because they cause major litter problems and clog sorting machinery. Many local grocery stores provide plastic bag recycling. Many plastic containers can be recycled.",
               },
               {
                 item: "Styrofoam",

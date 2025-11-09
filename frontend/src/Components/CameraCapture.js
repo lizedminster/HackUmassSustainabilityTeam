@@ -200,6 +200,24 @@ const CameraCapture = ({ user_id }) => {
             <p className="material-result">{material}</p>
             
             <DropDownMaterials />
+  
+            <div>
+              {material === "plastic" ? (
+                <p>Depends! Plastic shopping bags and other thin plastics like cling wrap cannot be placed in recycling bins because they cause major litter problems and clog sorting machinery. Many local grocery stores provide plastic bag recycling. Many plastic containers can be recycled.</p>
+              ) : material === "paper" ? (
+                <p>Recycle! Paper can be recycled in your household paper recycling. Store receipts can also be recycled. Carbon and thermal paper are not recyclable.</p>
+              ) : material === "glass" ? (
+                <p>Mostly Recycle! Most glass food and beverage bottles and jars smaller than 2 gallons in size may be included in your mixed container recycling bin. All BROKEN glass should go in the TRASH.</p>
+              ) : material === "metal" ? (
+                <p>Not Recyclable! Scrap metal is accepted at the Transfer Station. Disposal fees apply.</p>
+              ) : material === "cardboard" ? (
+                <p>Recycle! Cardboard can be recycled in your household paper recycling. Make sure there is no food residue such as pizza grease or Chinese take-out containers.</p>
+              ) : material === "biodegradable" ? (
+                <p>Compost! Biodegradable waste CANNOT be recycled, but it can be composted at home in a compost bin or at municipal collection programs.</p>
+              ) : (
+                <p>Take another photo.</p>
+              )}
+            </div>
             
             <div style={{ marginTop: '20px' }}>
               <button onClick={handleSave} className="save-btn">
