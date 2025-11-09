@@ -54,16 +54,16 @@ function SharePage({ user_id }) {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>User Recycling Stats</h1>
-        <h3>Username: {user?.username || "Loading..."}</h3>
+        <h1>Your Recycling Stats!</h1>
+        <h3 style={{marginTop: '0px'}}>{user?.username || "Loading..."}</h3>
 
-        <table style={{ marginTop: "20px", borderCollapse: "collapse" }}>
+        <table style={{ marginTop: "00px", borderCollapse: "collapse", marginBottom: "30px" }}>
           <thead>
             <tr>
-              <th style={{ border: "1px solid white", padding: "8px" }}>
+              <th style={{ border: "2px solid white", padding: "8px" }}>
                 Material Type
               </th>
-              <th style={{ border: "1px solid white", padding: "8px" }}>
+              <th style={{ border: "2px solid white", padding: "8px" }}>
                 Count
               </th>
             </tr>
@@ -71,20 +71,20 @@ function SharePage({ user_id }) {
           <tbody>
             {topMaterials.map(([type, count]) => (
               <tr key={type}>
-                <td style={{ border: "1px solid white", padding: "8px" }}>
+                <td style={{ border: "2px solid white", padding: "8px" }}>
                   {type}
                 </td>
-                <td style={{ border: "1px solid white", padding: "8px" }}>
+                <td style={{ border: "2px solid white", padding: "8px" }}>
                   {count}
                 </td>
               </tr>
             ))}
 
             <tr>
-              <td style={{ border: "1px solid white", padding: "8px", fontWeight: "bold" }}>
+              <td style={{ border: "2px solid white", padding: "8px", fontWeight: "bold" }}>
                 Total
               </td>
-              <td style={{ border: "1px solid white", padding: "8px", fontWeight: "bold" }}>
+              <td style={{ border: "2px solid white", padding: "8px", fontWeight: "bold", paddingBottom: "5px" }}>
                 {totalCount}
               </td>
             </tr>
