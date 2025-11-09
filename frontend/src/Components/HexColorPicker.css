@@ -1,0 +1,58 @@
+/* HexColorPicker.css */
+
+.color-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.color-picker-label {
+  font-weight: bold;
+  color: #5e795e;
+  font-size: 1em;
+}
+
+.swatch-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-swatch {
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.color-text-input {
+  width: 120px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid #5e795e;
+  text-align: center;
+  font-family: monospace;
+  font-weight: bold;
+  color: #1d4a27bd;
+  transition: 0.2s;
+}
+
+.color-text-input:focus {
+  outline: none;
+  border-color: #1d4a27bd;
+  box-shadow: 0 0 5px #1d4a27bd;
+}
+
+.selected-color-text {
+  font-weight: bold;
+  color: #1d4a27bd;
+  margin-top: 5px;
+}

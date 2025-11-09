@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import './HexColorPicker.css';
 
-const HexColorPicker = ({ label = "Select Color", defaultColor = "#8884d8", onChange }) => {
+const HexColorPicker = ({ label = "Circle Color", defaultColor = "#0a3f08ff", onChange }) => {
   const [color, setColor] = useState(defaultColor);
   const [inputValue, setInputValue] = useState(defaultColor);
 
@@ -14,7 +15,6 @@ const HexColorPicker = ({ label = "Select Color", defaultColor = "#8884d8", onCh
     const val = e.target.value.trim();
     setInputValue(val);
 
-    // validate hex format
     if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(val)) {
       setColor(val);
       if (onChange) onChange(val);
@@ -22,43 +22,29 @@ const HexColorPicker = ({ label = "Select Color", defaultColor = "#8884d8", onCh
   };
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "10px 0" }}>
-      <label style={{ fontWeight: "bold" }}>{label}:</label>
+    <div className="color-picker">
+      <label className="color-picker-label">{label}</label>
 
-      {/* Native color input */}
-      <input
-        type="color"
-        value={color}
-        onChange={(e) => handleColorChange(e.target.value)}
-        style={{ width: 40, height: 40, border: "none", cursor: "pointer" }}
-      />
+      <div className="swatch-container">
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => handleColorChange(e.target.value)}
+          className="color-swatch"
+        />
+      </div>
 
-      {/* Hex text input */}
       <input
         type="text"
         value={inputValue}
         onChange={handleInputChange}
         maxLength={7}
-        style={{
-          width: 100,
-          padding: "6px",
-          borderRadius: 6,
-          border: "1px solid #ccc",
-          fontFamily: "monospace",
-          textTransform: "uppercase",
-        }}
+        className="color-text-input"
       />
 
-      {/* Preview swatch */}
-      <div
-        style={{
-          width: 40,
-          height: 40,
-          backgroundColor: color,
-          border: "1px solid #ccc",
-          borderRadius: 6,
-        }}
-      />
+      <p className="selected-color-text">
+        Selected color: <span style={{ color }}>{color}</span>
+      </p>
     </div>
   );
 };
