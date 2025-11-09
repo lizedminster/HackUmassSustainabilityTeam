@@ -1,7 +1,12 @@
 # dependencies
 /node_modules
 /hack2025
+/test
 /__pycache__
+
+*.pyc
+
+*__pycache__*/
 
 # testing
 /coverage
