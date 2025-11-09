@@ -69,7 +69,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
     switchButton: {
       marginLeft: "20px",
       padding: "8px 12px",
-      backgroundColor: "#f00",
+      backgroundColor: "#1d4a27bd",
       color: "#fff",
       border: "none",
       borderRadius: "6px",
