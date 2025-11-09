@@ -3,20 +3,34 @@ import { useNavigate } from "react-router-dom";
 import CameraPage from "./CameraPage";
 import SharePage from "./SharePage";
 import Dashboard from "./Dashboard";
+import FastFacts from "./FastFacts";
 
 function TabsContainer({ user_id, setToken, setUserID }) {
   const [activeTab, setActiveTab] = useState("camera");
   const navigate = useNavigate();
 
-  // Helper for the underline transform
+  const handleSwitchAccount = () => {
+    // Clear token and user ID
+    setToken(null);
+    setUserID(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userID");
+
+    // Redirect to login page
+    navigate("/Auth");
+  };
+
+  // Helper for underline position
   const getUnderlinePosition = () => {
     switch (activeTab) {
-      case "share":
+      case "facts":
         return "0%";
-      case "camera":
+      case "share":
         return "100%";
-      case "dashboard":
+      case "camera":
         return "200%";
+      case "dashboard":
+        return "300%";
       default:
         return "0%";
     }
@@ -47,7 +61,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       border: "none",
       fontSize: "16px",
       fontWeight: isActive ? 600 : 500,
-      color: isActive ? "#1d4a27bd" : "#555",
+      color: isActive ? "#0a2f12bd" : "#555",
       cursor: "pointer",
       transition: "color 0.3s ease",
     }),
@@ -55,9 +69,9 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       position: "absolute",
       bottom: 0,
       left: 0,
-      width: "33.3333%",
+      width: "20%",
       height: "3px",
-      backgroundColor: "#1d4a27bd",
+      backgroundColor: "#0a2f12bd",
       transform: `translateX(${getUnderlinePosition()})`,
       transition: "transform 0.3s ease",
     },
@@ -65,33 +79,14 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       fontSize: "15px",
       color: "#333",
     },
-    switchButton: {
-      marginLeft: "20px",
-      padding: "8px 12px",
-      backgroundColor: "#f00",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontWeight: 500,
-      fontSize: "14px",
-    },
-  };
-
-  const handleSwitchAccount = () => {
-    // Clear token and user ID
-    setToken(null);
-    setUserID(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userID");
-
-    // Redirect to login page
-    navigate("/Auth");
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.tabsNavigation}>
+      <button style={styles.tab(activeTab === "facts")} onClick={() => setActiveTab("facts")}>
+          Fast Facts
+        </button>
         <button
           style={styles.tab(activeTab === "share")}
           onClick={() => setActiveTab("share")}
@@ -110,9 +105,10 @@ function TabsContainer({ user_id, setToken, setUserID }) {
         >
           Dashboard
         </button>
-
-        {/* Switch Account button */}
-        <button style={styles.switchButton} onClick={handleSwitchAccount}>
+        <button
+          style={styles.tab(false)} // same style, but never "active"
+          onClick={handleSwitchAccount}
+        >
           Switch Account
         </button>
 
@@ -120,6 +116,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       </div>
 
       <div style={styles.tabContent}>
+        {activeTab === "facts" && <FastFacts user_id={user_id} />}
         {activeTab === "share" && <SharePage user_id={user_id} />}
         {activeTab === "camera" && <CameraPage user_id={user_id} />}
         {activeTab === "dashboard" && <Dashboard user_id={user_id} />}

@@ -14,7 +14,6 @@ const COLORS = [
   "#F59E0B", // Cardboard
   "#10B981", // Glass
   "#EF4444", // Metal
-  "#8B5CF6", // Organic
   "#F472B6", // Paper
   "#14B8A6", // Plastic
   "#6B7280", // Unknown
@@ -28,7 +27,6 @@ const WeeklyBarChart = ({ data }) => {
     "Cardboard",
     "Glass",
     "Metal",
-    "Organic",
     "Paper",
     "Plastic",
     "Unknown",
