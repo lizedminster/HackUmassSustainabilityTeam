@@ -1,24 +1,35 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import UsageLineChart from "./Components/UsageLineChart";
 import WeeklyBarChart from "./Components/WeeklyBarChart";
 import Leaderboard from "./Components/Leaderboard";
 import WeekNavigator from "./Components/WeekNavigator";
 import "./Dashboard.css";
 
-const Dashboard = ({user_id}) => {
-  const USER_ID = parseInt(user_id); // Only show data for this user in charts
-  console.log(user_id);
+const Dashboard = ({ user_id }) => {
+  const USER_ID = parseInt(user_id);
   const [barData, setBarData] = useState([]);
   const [lineData, setLineData] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [leaderboardWeekly, setLeaderboardWeekly] = useState([]);
   const [leaderboardAllTime, setLeaderboardAllTime] = useState([]);
   const [logs, setLogs] = useState([]);
-  const [users, setUsers] = useState([]); // 👈 store all users with their hex colors
+  const [users, setUsers] = useState([]);
 
   const formatDate = (datetime) => datetime.split("T")[0];
 
-  // 🔹 Fetch both users and logs on mount
+  const allowedTypes = [
+    "glass",
+    "paper",
+    "plastic",
+    "metal",
+    "cardboard",
+    "biodegradable",
+    "organic",
+    "unknown",
+  ];
+
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,11 +53,9 @@ const Dashboard = ({user_id}) => {
     fetchData();
   }, []);
 
-  // 🔹 Build leaderboards when logs or users change
+  // All-time leaderboard
   useEffect(() => {
     if (logs.length === 0 || users.length === 0) return;
-
-    // --- All-time leaderboard ---
     const allTimeCounts = {};
     logs.forEach((log) => {
       allTimeCounts[log.user_id] = (allTimeCounts[log.user_id] || 0) + 1;
@@ -55,7 +64,7 @@ const Dashboard = ({user_id}) => {
     const allTimeLeaderboard = Object.entries(allTimeCounts)
       .map(([user_id, dataCount]) => {
         const user = users.find((u) => u.id === Number(user_id));
-        const color = user?.hexcolor || "#8884d8"; // use user’s saved color
+        const color = user?.hexcolor || "#8884d8";
         return {
           username: user ? user.username : `User ${user_id}`,
           dataCount,
@@ -67,7 +76,7 @@ const Dashboard = ({user_id}) => {
     setLeaderboardAllTime(allTimeLeaderboard);
   }, [logs, users]);
 
-  // 🔹 Weekly leaderboard & charts update when week changes
+  // Weekly leaderboard & charts
   useEffect(() => {
     if (!selectedWeek || logs.length === 0 || users.length === 0) {
       setBarData([]);
@@ -84,7 +93,7 @@ const Dashboard = ({user_id}) => {
       return logDate >= sunday && logDate <= saturday;
     });
 
-    // --- Weekly leaderboard ---
+    // Weekly leaderboard
     const weekCounts = {};
     weekLogs.forEach((log) => {
       weekCounts[log.user_id] = (weekCounts[log.user_id] || 0) + 1;
@@ -104,29 +113,42 @@ const Dashboard = ({user_id}) => {
 
     setLeaderboardWeekly(weeklyLeaderboard);
 
-    // --- User-specific charts ---
+    // User-specific chart data
     const userLogs = weekLogs.filter((log) => log.user_id === USER_ID);
-
     const grouped = {};
     userLogs.forEach((log) => {
       if (!log.material_type) return;
-      const date = formatDate(log.created_at);
       const type = log.material_type.trim().toLowerCase();
-      const key = type.charAt(0).toUpperCase() + type.slice(1);
+      if (!allowedTypes.includes(type)) return;
+      const key = capitalize(type);
+      const date = formatDate(log.created_at);
       if (!grouped[date]) grouped[date] = { date };
       grouped[date][key] = (grouped[date][key] || 0) + 1;
     });
-    setBarData(Object.values(grouped));
 
+    // Fill in missing types for every date
+    const barDataWithAllTypes = Object.values(grouped).map((row) => {
+      allowedTypes.forEach((t) => {
+        const key = capitalize(t);
+        if (!(key in row)) row[key] = 0;
+      });
+      return row;
+    });
+
+    setBarData(barDataWithAllTypes);
+
+    // Line chart
     const lineCounts = {};
     userLogs.forEach((log) => {
       if (!log.material_type) return;
       const date = formatDate(log.created_at);
       lineCounts[date] = (lineCounts[date] || 0) + 1;
     });
+
     const lineDataArray = Object.keys(lineCounts)
       .sort()
       .map((date) => ({ date, value: lineCounts[date] }));
+
     setLineData(lineDataArray);
   }, [selectedWeek, logs, users, USER_ID]);
 
@@ -135,7 +157,6 @@ const Dashboard = ({user_id}) => {
       <header className="Dashboard-header">
         <h1>Dashboard Page</h1>
 
-        {/* Week Navigator */}
         <div style={{ width: "80%", margin: "20px auto" }}>
           <WeekNavigator
             data={logs.map((log) => ({ date: formatDate(log.created_at) }))}
@@ -143,25 +164,55 @@ const Dashboard = ({user_id}) => {
           />
         </div>
 
-        {/* Line Chart */}
-        <div style={{ width: "80%", margin: "20px auto" }}>
+        <div
+          style={{
+            width: "80%",
+            margin: "20px auto",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
           <UsageLineChart data={lineData} week={selectedWeek} />
         </div>
 
-        {/* Bar Chart */}
-        <div style={{ width: "80%", margin: "20px auto" }}>
-          <WeeklyBarChart data={barData} week={selectedWeek} />
+        <div
+          style={{
+            width: "100%",
+            margin: "20px auto",
+            backgroundColor: "white",
+            padding: "20px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
+          <WeeklyBarChart
+            data={barData}
+            week={selectedWeek}
+            materialTypes={allowedTypes.map(capitalize)}
+          />
         </div>
 
-        {/* Leaderboards */}
-        <div style={{ width: "80%", margin: "20px auto" }}>
+        <div
+          style={{
+            width: "150%",
+            margin: "20px auto",
+            color: "black",
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "12px",
+            position: "relative",
+            right: "30%",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
           <Leaderboard
-  leaderboardData1={leaderboardWeekly}
-  leaderboardData2={leaderboardAllTime}
-  title1="Top Users This Week"
-  title2="Top Users All-Time"
-/>
-
+            leaderboardData1={leaderboardWeekly}
+            leaderboardData2={leaderboardAllTime}
+            title1="Top Users This Week"
+            title2="Top Users All-Time"
+          />
         </div>
       </header>
     </div>
