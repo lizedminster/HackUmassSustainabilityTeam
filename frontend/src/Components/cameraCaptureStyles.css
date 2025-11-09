@@ -1,0 +1,57 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.capture-btn, .save-btn, .retake-btn {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.capture-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.save-btn {
+  background-color: #2196F3;
+  color: white;
+}
+
+.retake-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.material-result {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2196F3;
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}

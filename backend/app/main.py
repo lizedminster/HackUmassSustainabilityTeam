@@ -33,6 +33,7 @@ app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(recycle_log.router, prefix="/recycle_log", tags=["recycle_log"])
 app.include_router(detection.router, prefix="/detect", tags=["Detection"])
 
+
 # Background Removal Code
 class ImageData(BaseModel):
     image: str  # base64 string

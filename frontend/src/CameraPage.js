@@ -11,7 +11,6 @@ function CameraPage({user_id}) {
           RecycleTime
         </h1>
         <div>
-          <TextBox />
         </div>
         <div>
           <CameraCapture user_id={user_id} />
