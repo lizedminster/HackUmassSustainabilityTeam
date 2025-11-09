@@ -9,7 +9,18 @@ function TabsContainer({ user_id, setToken, setUserID }) {
   const [activeTab, setActiveTab] = useState("camera");
   const navigate = useNavigate();
 
-  // Helper for the underline transform
+  const handleSwitchAccount = () => {
+    // Clear token and user ID
+    setToken(null);
+    setUserID(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userID");
+
+    // Redirect to login page
+    navigate("/Auth");
+  };
+
+  // Helper for underline position
   const getUnderlinePosition = () => {
     switch (activeTab) {
       case "facts":
@@ -50,7 +61,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       border: "none",
       fontSize: "16px",
       fontWeight: isActive ? 600 : 500,
-      color: isActive ? "#1d4a27bd" : "#555",
+      color: isActive ? "#0a2f12bd" : "#555",
       cursor: "pointer",
       transition: "color 0.3s ease",
     }),
@@ -60,7 +71,7 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       left: 0,
       width: "33.3333%",
       height: "3px",
-      backgroundColor: "#1d4a27bd",
+      backgroundColor: "#0a2f12bd",
       transform: `translateX(${getUnderlinePosition()})`,
       transition: "transform 0.3s ease",
     },
@@ -69,28 +80,6 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       fontSize: "15px",
       color: "#333",
     },
-    switchButton: {
-      marginLeft: "20px",
-      padding: "8px 12px",
-      backgroundColor: "#1d4a27bd",
-      color: "#fff",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontWeight: 500,
-      fontSize: "14px",
-    },
-  };
-
-  const handleSwitchAccount = () => {
-    // Clear token and user ID
-    setToken(null);
-    setUserID(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userID");
-
-    // Redirect to login page
-    navigate("/Auth");
   };
 
   return (
@@ -117,9 +106,10 @@ function TabsContainer({ user_id, setToken, setUserID }) {
         >
           Dashboard
         </button>
-
-        {/* Switch Account button */}
-        <button style={styles.switchButton} onClick={handleSwitchAccount}>
+        <button
+          style={styles.tab(false)} // same style, but never "active"
+          onClick={handleSwitchAccount}
+        >
           Switch Account
         </button>
 
