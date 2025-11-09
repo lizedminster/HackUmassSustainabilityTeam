@@ -76,7 +76,6 @@ function TabsContainer({ user_id, setToken, setUserID }) {
       transition: "transform 0.3s ease",
     },
     tabContent: {
-      padding: "24px",
       fontSize: "15px",
       color: "#333",
     },
